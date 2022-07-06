@@ -3,11 +3,11 @@ const jwt = require('jsonwebtoken');
 
 //models
 const { Users } = require('../models/users');
+const { Restaurants } = require('../models/restaurants');
 
 //utils
 const { catchAsync } = require('../utils/catchAsync');
 const { AppError } = require('../utils/appError');
-const { Restaurants } = require('../models/restaurants');
 
 const signUp = catchAsync(async (req,res,next)=>{
     const { name,email,password } = req.body;

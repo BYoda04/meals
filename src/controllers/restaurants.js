@@ -1,4 +1,5 @@
 //models
+const { Meals } = require('../models/meals');
 const { Restaurants } = require('../models/restaurants');
 const { Reviews } = require('../models/reviews');
 const { Users } = require('../models/users');
@@ -20,6 +21,10 @@ const getItems = catchAsync(async (req,res,next)=>{
             {
                 model: Reviews,
                 attributes: ['comment','rating','status']
+            },
+            {
+                model: Meals,
+                attributes: ['name','price','status']
             }
         ],
         attributes: ['id','name','addres','rating','createdAt','updatedAt']
@@ -47,6 +52,10 @@ const getItem = catchAsync(async (req,res,next)=>{
             {
                 model: Reviews,
                 attributes: ['comment','rating','status']
+            },
+            {
+                model: Meals,
+                attributes: ['name','price','status']
             }
         ],
         attributes: ['id','name','addres','rating','createdAt','updatedAt']

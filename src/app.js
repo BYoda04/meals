@@ -4,6 +4,7 @@ const express = require('express');
 // Routers
 const { usersRouter } = require('./routes/users.routes');
 const { restaurantsRouter } = require('./routes/restaurants.routes');
+const { mealsRouter } = require('./routes/meals.routes');
 
 // Global err controller
 const { globalErrorHandler } = require('./utils/globalErrorHandler');
@@ -19,6 +20,7 @@ app.use(express.json());
 // Define endpoints
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/restaurants',restaurantsRouter);
+app.use('/api/v1/meals',mealsRouter);
 
 // Handle incoming unknown routes to the server
 app.all('*', (req, res, next) => {

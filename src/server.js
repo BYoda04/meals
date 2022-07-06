@@ -36,14 +36,6 @@ Petitions.belongsTo(Orders);
 Petitions.belongsTo(Meals);
 
 //belongs to many
-Petitions.belongsToMany(Orders,{
-	foreignKey: 'petitionsId',
-	through: 'petitionsInOrder'
-});
-Orders.belongsToMany(Petitions,{
-	foreignKey: 'orderId',
-	through: 'petitionsInOrder'
-});
 
 db.sync()
 	.then(() => console.log('Db synced'))

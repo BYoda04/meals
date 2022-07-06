@@ -29,6 +29,10 @@ const reviews = catchAsync(async (req,res,next)=>{
         restaurantId
     })
 
+    await restaurant.update({
+        rating: parseInt(restaurant.rating) + parseInt(rating)
+    })
+
     res.status(200).json({
         status: 'success',
         newReview
@@ -39,9 +43,31 @@ const updateReview = catchAsync(async (req,res,next)=>{
     const { review, userSession } = req;
     const { comment,rating } = req.body;
 
+    let newRating
+
     if (review.dataValues.id !== userSession.id) {
         return next(new AppError('You are not the owner of this review'))
     }
+
+    const restaurant = await Restaurants.findOne({
+        where: {
+            id: review.restaurantId,
+            status: 'active'
+        }
+    })
+
+    if (!restaurant) {
+        return next(new AppError('Restaurant dont exists',404));
+    };
+
+    //comprobar si se suben o bajan puntos
+    newRating = (parseInt(restaurant.rating) - parseInt(review.rating)) + (parseInt(rating) - parseInt(review.rating))
+    if (parseInt(rating)<parseInt(review.rating)) {
+        newRating = (parseInt(restaurant.rating) - parseInt(review.rating)) + (parseInt(review.rating) - parseInt(rating))
+    }
+    await restaurant.update({
+        rating: newRating
+    })
 
     await review.update({
         comment,
