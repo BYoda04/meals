@@ -1,5 +1,9 @@
 require('dotenv').config()
 const express = require('express');
+const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
 
 // Routers
 const { usersRouter } = require('./routes/users.routes');
@@ -17,6 +21,25 @@ const { AppError } = require('./utils/appError');
 const app = express();
 
 app.use(express.json());
+
+// Limit the number of requests that can be accepted to our server
+const limiter = rateLimit({
+	max: 10000,
+	windowMs: 60 * 60 * 1000, // 1 hr
+	message: 'Number of requests have been exceeded',
+});
+
+app.use(limiter);
+
+//add security headers
+app.use(helmet());
+
+//compress response
+app.use(compression());
+
+//morgan
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+else app.use(morgan('combined'));
 
 // Define endpoints
 app.use('/api/v1/users', usersRouter);
