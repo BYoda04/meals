@@ -45,6 +45,4 @@ const port = process.env.PORT || 4001
 
 app.listen(port, () => {
 	console.log('Express app running!!');
-	console.log(process.env.DIALECT);
-	console.log(process.env.DB_USER);
 });
