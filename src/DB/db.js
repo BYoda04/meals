@@ -4,7 +4,6 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './.env' });
 
 const db = new Sequelize({
-	dialect:'postgres',
 	host: process.env.HOST,
 	username: process.env.DB_USER,
 	password: process.env.PASSWORD,
