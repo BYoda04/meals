@@ -3,9 +3,6 @@ const dotenv = require('dotenv');
 
 dotenv.config({ path: './.env' });
 
-console.log(process.env.DIALECT);
-console.log(process.env.DB_USER);
-
 const db = new Sequelize({
 	dialect:process.env.DIALECT,
 	host: process.env.HOST,
