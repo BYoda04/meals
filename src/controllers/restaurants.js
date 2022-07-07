@@ -16,15 +16,15 @@ const getItems = catchAsync(async (req,res,next)=>{
         include: [
             {
                 model: Users,
-                attributes: ['name','email']
+                attributes: ['id','name','email']
             },
             {
                 model: Reviews,
-                attributes: ['comment','rating','status']
+                attributes: ['id','comment','rating','status']
             },
             {
                 model: Meals,
-                attributes: ['name','price','status']
+                attributes: ['id','name','price','status']
             }
         ],
         attributes: ['id','name','addres','rating','createdAt','updatedAt']
@@ -47,15 +47,15 @@ const getItem = catchAsync(async (req,res,next)=>{
         include: [
             {
                 model: Users,
-                attributes: ['name','email']
+                attributes: ['id','name','email']
             },
             {
                 model: Reviews,
-                attributes: ['comment','rating','status']
+                attributes: ['id','comment','rating','status']
             },
             {
                 model: Meals,
-                attributes: ['name','price','status']
+                attributes: ['id','name','price','status']
             }
         ],
         attributes: ['id','name','addres','rating','createdAt','updatedAt']
