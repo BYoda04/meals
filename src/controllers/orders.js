@@ -44,7 +44,8 @@ const create = catchAsync(async (req,res,next)=>{
     const petition = await Petitions.findOne({
         where: {
             mealId,
-            orderId: newOrder.id
+            orderId: newOrder.id,
+            status: 'active'
         }
     })
 
@@ -56,7 +57,7 @@ const create = catchAsync(async (req,res,next)=>{
             orderId: newOrder.id
         });
     } else {
-        petition.update({
+        await petition.update({
             total_price: parseInt(petition.total_price) + (parseInt(meal.price)*parseInt(quantity)),
             quantity: parseInt(petition.quantity) + parseInt(quantity)
         });
@@ -79,7 +80,7 @@ const getItems = catchAsync(async (req,res,next)=>{
         include: [
             {
                 model: Petitions,
-                attributes: ['total_price','quantity','status','createdAt','updatedAt'],
+                attributes: ['id','total_price','quantity','status','createdAt','updatedAt'],
                 include: {
                     model: Meals,
                     attributes: ['name','price'],
@@ -106,7 +107,7 @@ const getItems = catchAsync(async (req,res,next)=>{
 const purchases = catchAsync(async (req,res,next)=>{
     const { userSession } = req;
 
-    const data = await Orders.findOne({
+    const data = await Orders.findAll({
         where: {
             userId: userSession.id,
             status: 'completed'
@@ -149,9 +150,25 @@ const completed = catchAsync(async (req,res,next)=>{
         status: 'completed'
     });
 
+    const petitions = await Petitions.findAll({
+        where:{
+            orderId: order.id,
+            status: 'active'
+        }
+    });
+
+    if (petitions) {
+        petitions.map(catchAsync(async petition=>{
+            await petition.update({
+                status: 'completed'
+            })
+        }));
+    };
+
+
     res.status(201).json({
         status: 'success'
-    })
+    });
 });
 
 const deleted = catchAsync(async (req,res,next)=>{
@@ -165,15 +182,58 @@ const deleted = catchAsync(async (req,res,next)=>{
         status: 'cancelled'
     });
 
+    const petitions = await Petitions.findAll({
+        where:{
+            orderId: order.id,
+            status: 'active'
+        }
+    });
+
+    if (petitions) {
+        petitions.map(catchAsync(async petition => {
+            await petition.update({
+                status: 'cancelled'
+            });
+        }));
+    };
+
     res.status(201).json({
         status: 'success'
-    })
+    });
 });
+
+const deletedPetition = catchAsync(async (req,res,next)=>{
+    const { petition, userSession } = req;
+
+    const order = await Orders.findOne({
+        where:{
+            id: petition.orderId,
+            status: 'active'
+        }
+    });
+
+    if (!order) {
+        return next(new AppError('Petition not found',404))
+    }
+
+    if (parseInt(order.userId) !== parseInt(userSession.id)) {
+        return next(new AppError('You did not make this order',403));
+    };
+
+    await petition.update({
+        status:'cancelled'
+    });
+
+    res.status(201).json({
+        status: 'success'
+    });
+})
 
 module.exports = {
     create,
     getItems,
     completed,
     deleted,
+    deletedPetition,
     purchases
 };
