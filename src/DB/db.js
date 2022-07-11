@@ -19,6 +19,8 @@ const db = new Sequelize({
 	} : {},
 });
 
+console.log(db);
+
 module.exports = { 
     db, 
     DataTypes 
