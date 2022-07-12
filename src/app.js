@@ -4,6 +4,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const compression = require('compression');
 const morgan = require('morgan');
+const cors = require('cors');
 
 // Routers
 const { usersRouter } = require('./routes/users.routes');
@@ -20,6 +21,7 @@ const { AppError } = require('./utils/appError');
 // Init express app
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 // Limit the number of requests that can be accepted to our server
