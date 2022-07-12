@@ -11,7 +11,7 @@ const sendErrorDev = (err,req,res)=>{
 	});
 };
 
-const sendErrorProd = ()=>{
+const sendErrorProd = (err,req,res)=>{
 	const statusCode = err.statusCode || 500;
 
 	res.status(statusCode).json({
