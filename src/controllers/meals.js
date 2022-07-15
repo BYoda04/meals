@@ -14,6 +14,10 @@ const getItems = catchAsync(async (req,res,next)=>{
         include: [
             {
                 model:Restaurants,
+                required: false,
+                where: {
+                    status: 'active'
+                },
                 attributes: ['id','name','addres','rating']
             }   
         ],
@@ -37,6 +41,10 @@ const getItem = catchAsync(async (req,res,next)=>{
         include: [
             {
                 model:Restaurants,
+                required: false,
+                where: {
+                    status: 'active'
+                },
                 attributes: ['id','name','addres','rating']
             }   
         ],

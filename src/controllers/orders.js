@@ -5,7 +5,6 @@ const { Meals } = require("../models/meals");
 const { Orders } = require("../models/orders");
 const { Petitions } = require("../models/petitions");
 const { Restaurants } = require("../models/restaurants");
-const { Users } = require("../models/users");
 const { AppError } = require("../utils/appError");
 const { catchAsync } = require("../utils/catchAsync");
 
@@ -80,9 +79,17 @@ const getItems = catchAsync(async (req,res,next)=>{
         include: [
             {
                 model: Petitions,
+                required: false,
+                where: {
+                    status: 'active'
+                },
                 attributes: ['id','total_price','quantity','status','createdAt','updatedAt'],
                 include: {
                     model: Meals,
+                    required: false,
+                    where: {
+                        status: 'active'
+                    },
                     attributes: ['name','price'],
                     include: {
                         model: Restaurants,
@@ -115,12 +122,24 @@ const purchases = catchAsync(async (req,res,next)=>{
         include: [
             {
                 model: Petitions,
+                required: false,
+                where: {
+                    status: 'completed'
+                },
                 attributes: ['total_price','quantity','status','createdAt','updatedAt'],
                 include: {
                     model: Meals,
+                    required: false,
+                    where: {
+                        status: 'active'
+                    },
                     attributes: ['name','price'],
                     include: {
                         model: Restaurants,
+                        required: false,
+                        where: {
+                            status: 'active'
+                        },
                         attributes: ['name','addres','rating']
                     }
                 }

@@ -16,15 +16,27 @@ const getItems = catchAsync(async (req,res,next)=>{
         include: [
             {
                 model: Users,
+                required: false,
+                where: {
+                    status: 'active'
+                },
                 attributes: ['id','name','email']
             },
             {
                 model: Reviews,
-                attributes: ['id','comment','rating','status']
+                required: false,
+                where: {
+                    status: 'active'
+                },
+                attributes: ['id','comment','rating']
             },
             {
                 model: Meals,
-                attributes: ['id','name','price','status']
+                required: false,
+                where: {
+                    status: 'active'
+                },
+                attributes: ['id','name','price']
             }
         ],
         attributes: ['id','name','addres','rating','createdAt','updatedAt']
@@ -47,15 +59,27 @@ const getItem = catchAsync(async (req,res,next)=>{
         include: [
             {
                 model: Users,
+                required: false,
+                where: {
+                    status: 'active'
+                },
                 attributes: ['id','name','email']
             },
             {
                 model: Reviews,
-                attributes: ['id','comment','rating','status']
+                required: false,
+                where: {
+                    status: 'active'
+                },
+                attributes: ['id','comment','rating']
             },
             {
                 model: Meals,
-                attributes: ['id','name','price','status']
+                required: false,
+                where: {
+                    status: 'active'
+                },
+                attributes: ['id','name','price']
             }
         ],
         attributes: ['id','name','addres','rating','createdAt','updatedAt']
